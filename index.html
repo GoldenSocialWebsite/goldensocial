@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Golden Social — Paid Media & Growth Consulting</title>
+  <title>Golden Social, Paid Media & Growth Consulting</title>
   <meta name="description" content="Golden Social is a boutique paid media consultancy run by Zachary Goldberg, a performance marketing leader with experience across Meta, TikTok, Google, and beyond." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { hyphens: none !important; }
 
     :root {
       --gold: #C9A84C;
@@ -81,10 +82,70 @@
       min-height: auto;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       padding: 7rem 4rem 3rem;
       position: relative;
       overflow: hidden;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-middle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-top: 1.8rem;
+      align-items: center;
+    }
+
+    @media (max-width: 1024px) {
+      .hero-middle {
+        grid-template-columns: 1fr;
+      }
+      .hero-right {
+        border-left: none !important;
+        border-top: 1px solid rgba(201,168,76,0.15);
+        padding-left: 0 !important;
+        padding-top: 2rem;
+      }
+    }
+
+    .hero-middle-left {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+      align-items: center;
+    }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border-left: 1px solid rgba(201,168,76,0.15);
+      padding-left: 4rem;
+    }
+
+    .hero-right-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-right-text {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      color: var(--light);
+      line-height: 1.6;
+      font-style: italic;
+      hyphens: none;
+      word-break: normal;
+      overflow-wrap: normal;
     }
 
     .hero-bg {
@@ -102,16 +163,18 @@
       text-transform: uppercase;
       color: var(--gold);
       margin-bottom: 1rem;
+      text-align: center;
       opacity: 0;
       animation: fadeUp 0.8s ease forwards 0.2s;
     }
 
     .hero-headline {
       font-family: var(--serif);
-      font-size: clamp(2.2rem, 4vw, 4rem);
+      font-size: clamp(2rem, 3.5vw, 3.6rem);
       font-weight: 900;
       line-height: 1.1;
-      max-width: 640px;
+      max-width: 100%;
+      text-align: center;
       opacity: 0;
       animation: fadeUp 0.9s ease forwards 0.4s;
     }
@@ -125,8 +188,10 @@
       margin-top: 1.2rem;
       font-size: 1rem;
       color: var(--light);
-      max-width: 640px;
+      max-width: 100%;
+      text-align: center;
       line-height: 1.7;
+      hyphens: none;
       opacity: 0;
       animation: fadeUp 0.9s ease forwards 0.6s;
     }
@@ -136,6 +201,7 @@
       display: flex;
       gap: 1.2rem;
       align-items: center;
+      justify-content: center;
       opacity: 0;
       animation: fadeUp 0.9s ease forwards 0.8s;
     }
@@ -152,6 +218,7 @@
       text-decoration: none;
       border: none;
       cursor: pointer;
+      white-space: nowrap;
       transition: background 0.2s, transform 0.2s;
     }
 
@@ -165,6 +232,7 @@
       text-decoration: none;
       border-bottom: 1px solid rgba(255,255,255,0.3);
       padding-bottom: 2px;
+      white-space: nowrap;
       transition: color 0.2s, border-color 0.2s;
     }
 
@@ -176,6 +244,7 @@
       border-top: 1px solid rgba(201,168,76,0.25);
       display: flex;
       gap: 4rem;
+      justify-content: center;
       opacity: 0;
       animation: fadeUp 0.9s ease forwards 1s;
     }
@@ -351,12 +420,14 @@
     }
 
     .channel-tags {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 0.75rem;
       padding-top: 0.5rem;
-      justify-content: flex-end;
-      align-content: flex-start;
+    }
+
+    .channel-tag-wide {
+      grid-column: 1 / -1;
     }
 
     .channel-tag {
@@ -368,6 +439,10 @@
       text-transform: uppercase;
       transition: all 0.2s;
       font-family: var(--sans);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .channel-tag:hover {
@@ -426,19 +501,33 @@
     }
 
     .contact-body {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       color: var(--light);
       line-height: 1.8;
       margin-top: 1.5rem;
       margin-bottom: 2.5rem;
-      max-width: 700px;
     }
 
     .contact-top {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .contact-top-header {
+      text-align: center;
+    }
+
+    .contact-top-header .section-title {
+      max-width: 100%;
+    }
+
+    .contact-top-details {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 4rem;
-      margin-bottom: 3rem;
+      align-items: start;
     }
 
     .contact-detail {
@@ -449,7 +538,7 @@
     }
 
     .contact-item {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       color: var(--light);
     }
 
@@ -614,6 +703,8 @@
       #about { grid-template-columns: 1fr; gap: 2.5rem; }
       .services-grid { grid-template-columns: 1fr; }
       .channels-inner { grid-template-columns: 1fr; }
+      .hero-middle { grid-template-columns: 1fr; }
+      .hero-right { border-left: none; padding-left: 0; border-top: 1px solid rgba(201,168,76,0.15); padding-top: 2rem; }
       .client-types { grid-template-columns: 1fr; }
       .contact-top { grid-template-columns: 1fr; gap: 2rem; }
       footer { flex-direction: column; gap: 1rem; text-align: center; }
@@ -641,16 +732,24 @@
   <!-- HERO -->
   <section id="hero">
     <div class="hero-bg"></div>
-    <p class="hero-label">Boutique Paid Media Consultancy — New York, NY</p>
+    <p class="hero-label">Boutique Paid Media Consultancy, New York, NY</p>
     <h1 class="hero-headline">
-      The performance partner<br />brands bring in when<br /><em>results actually matter.</em>
+      The performance partner brands bring in when <em>results actually matter.</em>
     </h1>
-    <p class="hero-sub">
-      Golden Social partners with brands to build and scale paid media programs across every major platform — from first dollar spent to eight-figure budgets.
-    </p>
-    <div class="hero-cta">
-      <a class="btn-primary" href="#contact">Start a Conversation</a>
-      <a class="btn-ghost" href="#services">See What We Do</a>
+    <div class="hero-middle">
+      <div class="hero-middle-left">
+        <p class="hero-sub">
+          Golden Social partners with brands to build and scale paid media programs across every major platform, from first dollar spent to eight-figure budgets.
+        </p>
+        <div style="display:flex; flex-direction:column; gap:1rem; align-items:center; justify-content:center; width:100%; margin-top:1.8rem; opacity:1;">
+          <a class="btn-ghost" href="#services">See What We Do</a>
+          <a class="btn-primary" href="#contact" style="text-align:center; width:fit-content; padding:1.1rem 3rem; font-size:0.95rem; letter-spacing:0.12em;">Start a Conversation</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <p class="hero-right-label">What we do</p>
+        <p class="hero-right-text">Paid social and search. Full-funnel strategy. Agency management.<br />Built for brands that need a real partner, not another vendor.</p>
+      </div>
     </div>
     <div class="hero-stats">
       <div>
@@ -678,7 +777,7 @@
       <div class="about-body">
         <p>Golden Social is run by Zachary Goldberg, a performance marketing leader with nearly a decade of experience managing paid media at scale for global brands and growth-stage companies alike.</p>
         <p>By day, Zachary leads paid media for a major streaming platform across APAC and North America. Golden Social is how he brings that same institutional-grade thinking to brands that want a real partner, not a vendor.</p>
-        <p>No layers. No junior teams running your accounts. You work directly with someone who has built and run programs at enterprise scale — and knows how to right-size that thinking for any stage of growth.</p>
+        <p>No layers. No junior teams running your accounts. You work directly with someone who has built and run programs at enterprise scale, and knows how to right-size that thinking for any stage of growth.</p>
       </div>
       <div style="margin-top:2.5rem;">
         <a class="btn-primary" href="#contact">Work With Us</a>
@@ -713,12 +812,12 @@
       <div class="service-card">
         <div class="service-num">02</div>
         <div class="service-name">Paid Search</div>
-        <div class="service-desc">Google and Microsoft Ads management — from keyword strategy and bidding to landing page alignment. Built for brands that want intent-driven growth without wasted spend.</div>
+        <div class="service-desc">Google and Microsoft Ads management, from keyword strategy and bidding to landing page alignment. Built for brands that want intent-driven growth without wasted spend.</div>
       </div>
       <div class="service-card">
         <div class="service-num">03</div>
         <div class="service-name">Strategy & Audits</div>
-        <div class="service-desc">Channel audits, measurement framework builds, go-to-market paid strategy, and influencer program planning. Covers owned execution and agency/vendor oversight — actionable, not theoretical.</div>
+        <div class="service-desc">Channel audits, measurement framework builds, go-to-market paid strategy, and influencer program planning. Covers owned execution and agency/vendor oversight, actionable, not theoretical.</div>
       </div>
       <div class="service-card">
         <div class="service-num">04</div>
@@ -749,7 +848,7 @@
         <p class="channels-intro">From the platforms you already know to the ones your competitors haven't figured out yet. Full-funnel coverage across paid social, search, and video.</p>
       </div>
       <div class="channel-tags">
-        <div class="channel-tag">Meta / Instagram</div>
+        <div class="channel-tag channel-tag-wide">Meta / Instagram</div>
         <div class="channel-tag">TikTok</div>
         <div class="channel-tag">Google Ads</div>
         <div class="channel-tag">YouTube</div>
@@ -781,7 +880,7 @@
       </div>
       <div class="client-card">
         <h3>Established Brands</h3>
-        <p>Companies with existing programs that want a second set of expert eyes — audits, testing roadmaps, measurement strategy, or channel expansion.</p>
+        <p>Companies with existing programs that want a second set of expert eyes, audits, testing roadmaps, measurement strategy, or channel expansion.</p>
       </div>
     </div>
   </section>
@@ -791,17 +890,19 @@
   <!-- CONTACT -->
   <section id="contact">
     <div class="contact-top">
-      <div>
+      <div class="contact-top-header">
         <p class="section-label">Contact</p>
         <h2 class="section-title">Let's talk about what you're building.</h2>
+      </div>
+      <div class="contact-top-details">
         <p class="contact-body">
           Golden Social takes on a select number of clients at a time. Whether you're scaling from scratch or looking to sharpen an existing program, reach out and let's figure out if we're a fit.
         </p>
-      </div>
-      <div class="contact-detail">
-        <div class="contact-item">Email: <a href="mailto:Zachary@goldensocial.net">Zachary@goldensocial.net</a></div>
-        <div class="contact-item">LinkedIn: <a href="https://linkedin.com/in/goldbergzachary" target="_blank">linkedin.com/in/goldbergzachary</a></div>
-        <div class="contact-item">Based in New York, NY — available globally.</div>
+        <div class="contact-detail">
+          <div class="contact-item">Email: <a href="mailto:Zachary@goldensocial.net">Zachary@goldensocial.net</a></div>
+          <div class="contact-item">LinkedIn: <a href="https://linkedin.com/in/goldbergzachary" target="_blank">linkedin.com/in/goldbergzachary</a></div>
+          <div class="contact-item">Based in New York, NY, available globally.</div>
+        </div>
       </div>
     </div>
     <div>
@@ -835,7 +936,7 @@
         </div>
         <button class="form-submit" onclick="handleSubmit()">Send Inquiry</button>
         <div class="form-success" id="formSuccess">
-          Thanks — we'll be in touch within one business day.
+          Thanks, we'll be in touch within one business day.
         </div>
       </div>
     </div>
