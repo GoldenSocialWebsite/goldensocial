@@ -404,8 +404,8 @@
         <p class="loading-text">Loading portfolio&hellip;</p>
       </div>
 
-      <!-- Desktop: native inline PDF embed (all pages, scrollable) -->
-      <embed id="pdf-embed" class="pdf-embed" type="application/pdf" src="https://raw.githubusercontent.com/GoldenSocialWebsite/goldensocial/main/Zachary%20Goldberg%20-%20Portfolio%20'26.pdf" />
+      <!-- Desktop: Google Docs viewer renders PDF inline without triggering download -->
+      <iframe id="pdf-embed" class="pdf-embed" src="" frameborder="0" allowfullscreen></iframe>
 
       <!-- Mobile fallback -->
       <div class="pdf-mobile">
@@ -454,7 +454,7 @@
       if (input.value === PASS) {
         lockScreen.style.display = 'none';
         pfView.classList.add('show');
-        embed.src = PDF_URL;
+        embed.src = 'https://docs.google.com/viewer?url=' + encodeURIComponent(PDF_URL) + '&embedded=true';
         dlLink.href = PDF_URL;
         mobileDl.href = PDF_URL;
 
