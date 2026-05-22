@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     * { hyphens: none !important; }
@@ -35,6 +36,7 @@
       line-height: 1.6;
     }
 
+    /* NAV */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -44,7 +46,7 @@
       align-items: center;
       padding: 0 4rem;
       height: 68px;
-      background: rgba(10,10,10,0.92);
+      background: rgba(10,10,10,0.95);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid rgba(201,168,76,0.15);
     }
@@ -76,7 +78,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 68px 2rem 0;
+      padding-top: 68px;
       background: var(--black);
     }
 
@@ -96,7 +98,7 @@
       max-width: 400px;
       background: var(--dark);
       border: 1px solid rgba(201,168,76,0.2);
-      padding: 2.8rem 2.8rem;
+      padding: 2.8rem;
       text-align: center;
       animation: fadeUp 0.6s ease forwards;
       opacity: 0;
@@ -107,7 +109,11 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .lock-icon { font-size: 2.2rem; color: var(--gold); margin-bottom: 1.2rem; }
+    .lock-icon {
+      font-size: 2rem;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
 
     .lock-eyebrow {
       font-size: 0.68rem;
@@ -173,10 +179,9 @@
       border: none;
       cursor: pointer;
       color: var(--muted);
-      transition: color 0.2s;
       font-size: 1rem;
       padding: 0;
-      display: flex;
+      transition: color 0.2s;
     }
 
     .toggle-pw:hover { color: var(--light); }
@@ -198,7 +203,6 @@
     }
 
     .btn-unlock:hover { background: var(--gold-light); transform: translateY(-1px); }
-    .btn-unlock:active { transform: translateY(0); }
 
     .error-msg {
       font-size: 0.78rem;
@@ -230,6 +234,7 @@
 
     #portfolio-view.show { display: flex; }
 
+    /* Top bar */
     .pf-bar {
       display: flex;
       justify-content: space-between;
@@ -238,8 +243,8 @@
       background: var(--dark);
       border-bottom: 1px solid rgba(201,168,76,0.15);
       flex-shrink: 0;
-      flex-wrap: wrap;
       gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .pf-bar-eyebrow {
@@ -255,6 +260,22 @@
       font-size: 1rem;
       font-weight: 700;
     }
+
+    .pf-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .page-counter {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .page-counter span { color: var(--light); }
 
     .btn-dl {
       display: inline-flex;
@@ -272,38 +293,68 @@
       text-decoration: none;
       transition: background 0.2s, color 0.2s;
       white-space: nowrap;
+      cursor: pointer;
     }
 
     .btn-dl:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
 
-    .btn-dl svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-    /* PDF area fills remaining height */
-    .pdf-area {
-      flex: 1;
-      overflow: hidden;
-      background: #282828;
-      position: relative;
+    .btn-dl svg {
+      width: 13px; height: 13px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
-    .pdf-loading {
-      position: absolute;
-      inset: 0;
+    /* PDF scroll area */
+    .pdf-scroll {
+      flex: 1;
+      overflow-y: auto;
+      background: #1a1a1a;
+      scroll-behavior: smooth;
+    }
+
+    .pdf-scroll::-webkit-scrollbar { width: 6px; }
+    .pdf-scroll::-webkit-scrollbar-track { background: #111; }
+    .pdf-scroll::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    .pdf-scroll::-webkit-scrollbar-thumb:hover { background: #444; }
+
+    .pdf-pages {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 0 3rem;
+      gap: 12px;
+    }
+
+    .pdf-page-wrap {
+      width: 92%;
+      max-width: 1100px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.5);
+      line-height: 0;
+    }
+
+    .pdf-page-wrap canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Loading state */
+    .pdf-loading-state {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1rem;
-      background: #282828;
-      z-index: 3;
-      transition: opacity 0.5s;
+      padding: 5rem 2rem;
+      gap: 1.2rem;
+      color: var(--muted);
     }
-
-    .pdf-loading.hide { opacity: 0; pointer-events: none; }
 
     .spinner {
       width: 30px; height: 30px;
-      border: 2px solid rgba(201,168,76,0.18);
+      border: 2px solid rgba(201,168,76,0.15);
       border-top-color: var(--gold);
       border-radius: 50%;
       animation: spin 0.75s linear infinite;
@@ -311,40 +362,36 @@
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .loading-text { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
-
-    .pdf-embed {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
+    .loading-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
     }
 
-    /* Mobile: can't embed PDFs inline */
-    .pdf-mobile {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      padding: 2rem;
-      text-align: center;
-      gap: 1.4rem;
+    .progress-bar {
+      width: 160px;
+      height: 2px;
+      background: rgba(201,168,76,0.12);
+      border-radius: 1px;
+      overflow: hidden;
     }
 
-    .pdf-mobile p { font-size: 0.9rem; color: var(--light); line-height: 1.65; max-width: 300px; }
+    .progress-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 1px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
 
+    /* Mobile */
     @media (max-width: 900px) {
       nav { padding: 0 1.5rem; }
-      .lock-card { padding: 2rem 1.6rem; }
+      .lock-card { padding: 2rem 1.5rem; margin: 0 1rem; }
       .pf-bar { padding: 0.65rem 1.5rem; }
-      .pdf-embed { display: none; }
-      .pdf-mobile { display: flex; }
+      .pdf-page-wrap { width: 98%; }
     }
   </style>
-
-  <!-- Google Material Icons for lock/eye/download -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" />
 </head>
 <body>
 
@@ -357,9 +404,7 @@
   <div id="lock-screen">
     <div class="lock-bg"></div>
     <div class="lock-card">
-      <div class="lock-icon">
-        <span class="material-icons-round" style="font-size:2.2rem;">lock</span>
-      </div>
+      <div class="lock-icon">&#128274;</div>
       <p class="lock-eyebrow">Zachary Goldberg</p>
       <h1 class="lock-title">Performance Marketing Portfolio</h1>
       <p class="lock-sub">This portfolio is shared privately. Enter the password provided to access the full deck.</p>
@@ -373,9 +418,7 @@
           autocomplete="off"
           spellcheck="false"
         />
-        <button class="toggle-pw" id="toggle-pw" type="button" aria-label="Show password">
-          <span class="material-icons-round" id="eye-icon" style="font-size:1.1rem;">visibility</span>
-        </button>
+        <button class="toggle-pw" id="toggle-pw" type="button" aria-label="Show password">&#128065;</button>
       </div>
 
       <button class="btn-unlock" id="unlock-btn" type="button">Unlock Portfolio</button>
@@ -392,56 +435,44 @@
         <div class="pf-bar-eyebrow">Zachary Goldberg &mdash; Paid Media Lead</div>
         <div class="pf-bar-title">Performance Marketing Portfolio</div>
       </div>
-      <a class="btn-dl" id="dl-link" href="#" download="Zachary_Goldberg_Portfolio.pdf" target="_blank">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Download PDF
-      </a>
-    </div>
-
-    <div class="pdf-area">
-      <div class="pdf-loading" id="pdf-loading">
-        <div class="spinner"></div>
-        <p class="loading-text">Loading portfolio&hellip;</p>
-      </div>
-
-      <!-- Desktop: Google Docs viewer renders PDF inline without triggering download -->
-      <iframe id="pdf-embed" class="pdf-embed" src="" frameborder="0" allowfullscreen></iframe>
-
-      <!-- Mobile fallback -->
-      <div class="pdf-mobile">
-        <span class="material-icons-round" style="font-size:2.2rem; color:#C9A84C;">picture_as_pdf</span>
-        <p>Inline PDF viewing isn't available on most mobile browsers. Tap the button above to download and open the full portfolio.</p>
-        <a class="btn-dl" id="mobile-dl" href="#" target="_blank">
+      <div class="pf-bar-right">
+        <div class="page-counter" id="page-counter" style="display:none;">
+          Page <span id="current-page">1</span> of <span id="total-pages">—</span>
+        </div>
+        <a class="btn-dl" id="dl-link" href="#" download="Zachary_Goldberg_Portfolio.pdf">
           <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Open Portfolio PDF
+          Download PDF
         </a>
       </div>
     </div>
+
+    <div class="pdf-scroll" id="pdf-scroll">
+      <div class="pdf-loading-state" id="pdf-loading-state">
+        <div class="spinner"></div>
+        <p class="loading-label">Loading portfolio&hellip;</p>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+      <div class="pdf-pages" id="pdf-pages"></div>
+    </div>
+
   </div>
 
   <script>
-    // ─── Replace this with the real URL to your hosted PDF ───────────────────
-    var PDF_URL = 'https://raw.githubusercontent.com/GoldenSocialWebsite/goldensocial/main/Zachary%20Goldberg%20-%20Portfolio%20\'26.pdf';
-    // ─────────────────────────────────────────────────────────────────────────
-
+    var PDF_URL = "https://raw.githubusercontent.com/GoldenSocialWebsite/goldensocial/main/Zachary%20Goldberg%20-%20Portfolio%20'26.pdf";
     var PASS = 'ZacharyGoldberg92';
 
-    var input       = document.getElementById('pw-input');
-    var unlockBtn   = document.getElementById('unlock-btn');
-    var errorMsg    = document.getElementById('error-msg');
-    var lockScreen  = document.getElementById('lock-screen');
-    var pfView      = document.getElementById('portfolio-view');
-    var embed       = document.getElementById('pdf-embed');
-    var loading     = document.getElementById('pdf-loading');
-    var dlLink      = document.getElementById('dl-link');
-    var mobileDl    = document.getElementById('mobile-dl');
-    var toggleBtn   = document.getElementById('toggle-pw');
-    var eyeIcon     = document.getElementById('eye-icon');
+    var input      = document.getElementById('pw-input');
+    var unlockBtn  = document.getElementById('unlock-btn');
+    var errorMsg   = document.getElementById('error-msg');
+    var lockScreen = document.getElementById('lock-screen');
+    var pfView     = document.getElementById('portfolio-view');
+    var toggleBtn  = document.getElementById('toggle-pw');
+    var dlLink     = document.getElementById('dl-link');
 
     toggleBtn.addEventListener('click', function() {
-      var isHidden = input.type === 'password';
-      input.type = isHidden ? 'text' : 'password';
-      eyeIcon.textContent = isHidden ? 'visibility_off' : 'visibility';
+      input.type = input.type === 'password' ? 'text' : 'password';
     });
 
     input.addEventListener('keydown', function(e) {
@@ -454,23 +485,85 @@
       if (input.value === PASS) {
         lockScreen.style.display = 'none';
         pfView.classList.add('show');
-        embed.src = 'https://docs.google.com/viewer?url=' + encodeURIComponent(PDF_URL) + '&embedded=true';
         dlLink.href = PDF_URL;
-        mobileDl.href = PDF_URL;
-
-        embed.addEventListener('load', function() {
-          loading.classList.add('hide');
-        }, { once: true });
-
-        // Hide spinner after 6 seconds regardless
-        setTimeout(function() { loading.classList.add('hide'); }, 6000);
-
+        renderPDF(PDF_URL);
       } else {
         input.classList.add('error');
         errorMsg.classList.add('show');
         input.value = '';
         input.focus();
         setTimeout(function() { input.classList.remove('error'); }, 500);
+      }
+    }
+
+    // Track visible page for counter
+    var pdfScroll = document.getElementById('pdf-scroll');
+    pdfScroll.addEventListener('scroll', updatePageCounter);
+
+    function updatePageCounter() {
+      var pages = document.querySelectorAll('.pdf-page-wrap');
+      if (!pages.length) return;
+      var scrollTop = pdfScroll.scrollTop;
+      var visible = 1;
+      pages.forEach(function(p, i) {
+        if (p.offsetTop - pdfScroll.offsetTop <= scrollTop + pdfScroll.clientHeight / 2) {
+          visible = i + 1;
+        }
+      });
+      document.getElementById('current-page').textContent = visible;
+    }
+
+    async function renderPDF(url) {
+      var loadingState = document.getElementById('pdf-loading-state');
+      var pages        = document.getElementById('pdf-pages');
+      var progressFill = document.getElementById('progress-fill');
+      var pageCounter  = document.getElementById('page-counter');
+      var totalPagesEl = document.getElementById('total-pages');
+
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+      try {
+        var pdf = await pdfjsLib.getDocument(url).promise;
+        var numPages = pdf.numPages;
+        totalPagesEl.textContent = numPages;
+
+        for (var i = 1; i <= numPages; i++) {
+          var page = await pdf.getPage(i);
+
+          // Scale to fill available width
+          var containerWidth = pages.clientWidth * 0.92 || window.innerWidth * 0.92;
+          var baseViewport   = page.getViewport({ scale: 1 });
+          var scale          = containerWidth / baseViewport.width;
+          var viewport       = page.getViewport({ scale: scale });
+
+          var wrap   = document.createElement('div');
+          wrap.className = 'pdf-page-wrap';
+
+          var canvas = document.createElement('canvas');
+          canvas.width  = viewport.width;
+          canvas.height = viewport.height;
+
+          var ctx = canvas.getContext('2d');
+          await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+
+          wrap.appendChild(canvas);
+          pages.appendChild(wrap);
+
+          // Update progress
+          progressFill.style.width = Math.round((i / numPages) * 100) + '%';
+
+          // Hide loader and show counter after first page
+          if (i === 1) {
+            loadingState.style.display = 'none';
+            pageCounter.style.display = 'block';
+          }
+        }
+
+      } catch (err) {
+        loadingState.innerHTML =
+          '<p style="color:#888;font-size:.85rem;">Failed to load. <a href="' + url +
+          '" style="color:#C9A84C;" target="_blank">Open PDF directly</a></p>';
       }
     }
   </script>
